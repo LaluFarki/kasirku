@@ -3,10 +3,10 @@ import { Col } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
-export const Menus = ({ menu }) => {
+export const Menus = ({ menu , masukKeranjang }) => {
   return (
     <Col md={4} xs={6} className="mb-3">
-      <Card className="shadow">
+      <Card className="shadow" onClick={() => masukKeranjang(menu)} style={{ cursor: 'pointer' }}>
         <Card.Img 
           variant={"top"}
           src={
