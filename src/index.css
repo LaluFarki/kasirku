@@ -9,3 +9,6 @@ body {
   background-color: #22668a;
   color: white;
 }
+.btn-pointer {
+  cursor: pointer !important;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter,
-   Switch, 
+   Routes, 
    Route,
    } from "react-router-dom";
    import { NavbarComponent } from "./components";
@@ -12,10 +12,11 @@ export default class App extends Component {
       <BrowserRouter>
         <NavbarComponent />
         <main>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/sukses" component={Sukes} />
-          </Switch>
+          <Routes>
+            {/* ⬇️ 3. Gunakan "element" (bukan "component") dan "path" */}
+            <Route path="/" element={<Home />} exact/>
+            <Route path="/sukses" element={<Sukes />} exact/>
+          </Routes>
         </main>
       </BrowserRouter>
     );  

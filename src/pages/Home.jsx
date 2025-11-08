@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import "./App.css";
+import "../App.css";
 import { Row, Col, Container } from "react-bootstrap";
-import { NavbarComponent, ListCategorie, Hasil, Menus } from "../components";
+import {  ListCategorie, Hasil, Menus } from "../components";
 import { API_URL } from "../utils/constants";
 import axios from "axios";
 import swal from "sweetalert";
@@ -31,35 +31,21 @@ export default class Home extends Component {
         console.log("Error yaa ", error);
       });
 
+    this.getListKeranjang();
+  }
+
+  //untuk ngecek update agar tidak perlu reload saat menambah barang/hapus barang dll
+  getListKeranjang = () => {
     axios
       .get(API_URL + "keranjangs")
       .then((res) => {
-        console.log(res.data);
         const keranjangs = res.data;
-        // 4. Simpan data ke state
         this.setState({ keranjangs: keranjangs });
       })
       .catch((error) => {
         console.log("Error yaa ", error);
       });
-  }
-
-  //untuk ngecek update agar tidak perlu reload saat menambah barang/hapus barang dll
-  componentDidUpdate(prevState) {
-    if (this.state.keranjangs !== prevState.keranjangs) {
-      axios
-        .get(API_URL + "keranjangs")
-        .then((res) => {
-          console.log(res.data);
-          const keranjangs = res.data;
-          // 4. Simpan data ke state
-          this.setState({ keranjangs: keranjangs });
-        })
-        .catch((error) => {
-          console.log("Error yaa ", error);
-        });
-    }
-  }
+  };
 
   changeCategory = (value) => {
     this.setState({
@@ -80,11 +66,15 @@ export default class Home extends Component {
       });
   };
 
+  // pages/Home.jsx
+  // GANTI fungsi lama Anda dengan fungsi ini
+
   masukKeranjang = (value) => {
     axios
       .get(API_URL + "keranjangs?product.id=" + value.id)
       .then((res) => {
         if (res.data.length === 0) {
+          // JIKA BARANG BARU (POST)
           const keranjang = {
             jumlah: 1,
             total_harga: value.harga,
@@ -103,12 +93,14 @@ export default class Home extends Component {
                 button: false,
                 timer: 1500,
               });
+              // ⬇️ BARIS BARU DITAMBAHKAN DI SINI ⬇️
+              this.getListKeranjang();
             })
             .catch((error) => {
               console.log("Error yaa ", error);
             });
-        } // punya if
-        else {
+        } else {
+          // JIKA BARANG SUDAH ADA (PUT/UPDATE)
           const keranjang = {
             jumlah: res.data[0].jumlah + 1,
             total_harga: res.data[0].total_harga + value.harga,
@@ -127,12 +119,14 @@ export default class Home extends Component {
                 button: false,
                 timer: 1500,
               });
+              // ⬇️ BARIS BARU DITAMBAHKAN DI SINI ⬇️
+              this.getListKeranjang();
             })
             .catch((error) => {
               console.log("Error yaa ", error);
             });
-        } // punya else
-      }) // punya then
+        }
+      })
       .catch((error) => {
         console.log("Error yaa ", error);
       });
