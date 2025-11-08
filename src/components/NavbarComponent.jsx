@@ -8,9 +8,9 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 
 const NavbarComponent = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar  variant="dark" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">kasir App</Navbar.Brand>
+        <Navbar.Brand href="#"><strong>kasir App</strong></Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
