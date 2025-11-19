@@ -15,7 +15,7 @@ export default class Hasil extends Component {
         {keranjangs.length !== 0 && (
           <ListGroup variant="flush">
             {keranjangs.map((menuKeranjang) => (
-              <ListGroup.Item>
+              <ListGroup.Item key={menuKeranjang.id}>
                 <Row>
                   <Col xs={2}>
                     <h4>
@@ -35,7 +35,7 @@ export default class Hasil extends Component {
                   </Col>
                   <Col>
                     <h5>Total</h5>
-                    <strong className='float-right'>
+                    <strong className="float-right">
                       Rp.{" "}
                       {new Intl.NumberFormat("id-ID").format(
                         menuKeranjang.total_harga
@@ -48,7 +48,7 @@ export default class Hasil extends Component {
           </ListGroup>
         )}
 
-        <TotalBayar keranjangs={keranjangs} />
+        <TotalBayar keranjangs={keranjangs} {...this.props} />
       </Col>
     );
   }
