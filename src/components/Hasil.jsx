@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Badge, Col ,Row} from 'react-bootstrap';
 import ListGroup from "react-bootstrap/ListGroup";
+import TotalBayar from './TotalBayar';
 
 export default class Hasil extends Component {
   render() {
@@ -46,6 +47,8 @@ export default class Hasil extends Component {
             ))}
           </ListGroup>
         )}
+
+        <TotalBayar keranjangs={keranjangs} />
       </Col>
     );
   }
