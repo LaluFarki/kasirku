@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import "../App.css";
 import { Row, Col, Container } from "react-bootstrap";
 import {  ListCategorie, Hasil, Menus } from "../components";
