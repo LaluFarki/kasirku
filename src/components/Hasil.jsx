@@ -3,6 +3,11 @@ import { Badge, Col, Row } from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup";
 import TotalBayar from "./TotalBayar";
 import { ModalKeranjang } from "./ModalKeranjang";
+import { API_URL } from "../utils/constants";
+import axios from "axios";
+import swal from "sweetalert";
+
+
 
 export default class Hasil extends Component {
   // Menggunakan Class Field untuk state (lebih ringkas dan menghindari error 'undefined')
@@ -11,6 +16,7 @@ export default class Hasil extends Component {
     keranjangDetail: {}, // Ubah ke objek kosong agar tidak undefined saat pertama diakses
     jumlah: 0,
     keterangan: "",
+    totalHarga: 0,
   };
 
   handleShow = (menuKeranjang) => {
@@ -20,6 +26,7 @@ export default class Hasil extends Component {
       // Inisialisasi jumlah dan keterangan dari data keranjang
       jumlah: menuKeranjang.jumlah,
       keterangan: menuKeranjang.keterangan || "",
+      totalHarga: menuKeranjang.total_harga || 0,
     });
   };
 
@@ -27,6 +34,60 @@ export default class Hasil extends Component {
     this.setState({
       showModal: false,
     });
+  };
+
+  tambah = () => {
+    this.setState({
+      jumlah: this.state.jumlah + 1,
+      totalHarga:  this.state.keranjangDetail.product.harga * (this.state.jumlah + 1),
+    });
+  };
+
+  kurang = () => {
+    if (this.state.jumlah !== 1) {
+      this.setState({
+        jumlah: this.state.jumlah - 1,
+        totalHarga:
+          this.state.keranjangDetail.product.harga * (this.state.jumlah - 1),
+      });
+    }
+  };
+
+  changeHandler = (event) => {
+    this.setState({
+      keterangan: event.target.value,
+    });
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    // Implementasi logika simpan perubahan di sini
+    const data = {
+      jumlah: this.state.jumlah,
+      total_harga:this.state.totalHarga,
+      product: this.state.keranjangDetail.product,
+      keterangan:this.state.keterangan
+    };
+
+
+    axios
+      .put(API_URL + "keranjangs/" + this.state.keranjangDetail.id, data)
+      .then((res) => {
+        swal({
+          title: "Update Pesanan",
+          text:
+            "Sukses Update Pesanan!" +
+            data.product.nama,
+          icon: "success",
+          button: false,
+          timer: 1500,
+        });
+        // ⬇️ BARIS BARU DITAMBAHKAN DI SINI ⬇️
+        this.getListKeranjang();
+      })
+      .catch((error) => {
+        console.log("Error yaa ", error);
+      });
   };
 
   render() {
@@ -86,6 +147,10 @@ export default class Hasil extends Component {
               handleClose={this.handleClose}
               {...this.state}
               keranjangDetail={keranjangDetail}
+              tambah={this.tambah}
+              kurang={this.kurang}
+             changeHandler={this.changeHandler}
+             handleSubmit={this.handleSubmit}
             />
           </ListGroup>
         )}

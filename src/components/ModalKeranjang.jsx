@@ -4,6 +4,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const ModalKeranjang = ({
   showModal,
@@ -11,6 +13,12 @@ export const ModalKeranjang = ({
   namaMenu,
   jumlah,
   keranjangDetail,
+  keterangan,
+  tambah,
+  kurang,
+  changeHandler,
+  handleSubmit,
+  totalHarga
 }) => {
   if (keranjangDetail.product) {
     return (
@@ -28,26 +36,54 @@ export const ModalKeranjang = ({
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="name@example.com" />
+              <Form.Label>Total Harga : </Form.Label>
+              <p>
+                <strong>
+                  Rp.{" "}
+                  {new Intl.NumberFormat("id-ID").format(
+                   totalHarga
+                  )}
+                </strong>
+              </p>
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Jumlah : </Form.Label>
+                <br />
+              <Button variant="primary" size="sm" className="mr-3">
+                <FontAwesomeIcon icon={faMinus} onClick={ () => kurang()} />
+              </Button>
+              <strong>{jumlah}</strong>
+              <Button variant="primary" size="sm" className="ml-3">
+                <FontAwesomeIcon icon={faPlus} onClick={ () => tambah()} />
+              </Button>
+            </Form.Group>
+
             <Form.Group
               className="mb-3"
               controlId="exampleForm.ControlTextarea1"
             >
-              <Form.Label>Example textarea</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Label>Keterangan </Form.Label>
+              <Form.Control 
+              as="textarea" 
+              rows={3}
+               name="keterangan" 
+               placeholder="Contoh : Pedes, Nasi setengah"
+               value={keterangan}
+               onChange={(event) => changeHandler(event)}
+               />
             </Form.Group>
+            <Button variant="primary" type="submit"> 
+              Simpan
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Tutup
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Simpan Perubahan
+          <Button variant="danger" >
+            <FontAwesomeIcon icon={faTrash} />
+            Hapus Pesanan
           </Button>
         </Modal.Footer>
       </Modal>
