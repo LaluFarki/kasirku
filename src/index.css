@@ -5,10 +5,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.category-aktif{
+.category-aktif {
   background-color: #22668a;
   color: white;
 }
 .btn-pointer {
   cursor: pointer !important;
+}
+
+@media only screen and (max-height: 1000px) {
+  .hasil {
+    height: 500px;
+  }
+  .menu {
+    height: 600px;
+  }
+}
+
+.overflow-auto::-webkit-scrollbar {
+  display: none;
 }

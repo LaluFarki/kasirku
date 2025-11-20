@@ -18,7 +18,8 @@ export const ModalKeranjang = ({
   kurang,
   changeHandler,
   handleSubmit,
-  totalHarga
+  totalHarga,
+  hapusPesanan,
 }) => {
   if (keranjangDetail.product) {
     return (
@@ -81,7 +82,7 @@ export const ModalKeranjang = ({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" >
+          <Button variant="danger" onClick = { () => hapusPesanan(keranjangDetail.id)}>
             <FontAwesomeIcon icon={faTrash} />
             Hapus Pesanan
           </Button>

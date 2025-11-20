@@ -55,42 +55,85 @@ class TotalBayar extends Component {
     }, 0);
 
     return (
-      <div className="fixed-bottom">
-        <Row>
-          {/* Menggunakan offset 9 untuk menempatkan di 3 kolom terakhir */}
-          <Col md={{ span: 3, offset: 9 }} className="px-4">
-            {/* Tata Letak Total Bayar (Perbaikan Rata Kanan) */}
-            <Row className="mt-2 mb-3">
-              <Col xs={6}>
-                <h4>
-                  <strong>Total Bayar:</strong>
-                </h4>
-              </Col>
-              <Col xs={6} className="text-right">
-                <h4>
-                  <strong>
-                    Rp. {new Intl.NumberFormat("id-ID").format(totalBayar)}
-                  </strong>
-                </h4>
-              </Col>
-            </Row>
+      <>
+        {/* web */}
+        <div className="fixed-bottom d-none d-md-block">
+          <Row>
+            {/* Menggunakan offset 9 untuk menempatkan di 3 kolom terakhir */}
+            <Col md={{ span: 3, offset: 9 }} className="px-4">
+              {/* Tata Letak Total Bayar (Perbaikan Rata Kanan) */}
+              <Row className="mt-2 mb-3">
+                <Col xs={6}>
+                  <h4>
+                    <strong>Total Bayar:</strong>
+                  </h4>
+                </Col>
+                <Col xs={6} className="text-right">
+                  <h4>
+                    <strong>
+                      Rp. {new Intl.NumberFormat("id-ID").format(totalBayar)}
+                    </strong>
+                  </h4>
+                </Col>
+              </Row>
 
-            {/* Tombol BAYAR */}
-            <Button
-              variant="primary"
-              block
-              className="mb-2 mt-2"
-              size="lg"
-              onClick={() => this.sumbitTotalBayar(totalBayar)}
-              disabled={totalBayar === 0} // Non-aktifkan jika keranjang kosong
-            >
-              {" "}
-                 
-              <FontAwesomeIcon icon={faShoppingCart} />  <strong>BAYAR</strong>
-            </Button>
-          </Col>
-        </Row>
-      </div>
+              {/* Tombol BAYAR */}
+              <Button
+                variant="primary"
+                block
+                className="mb-2 mt-2"
+                size="lg"
+                onClick={() => this.sumbitTotalBayar(totalBayar)}
+                disabled={totalBayar === 0} // Non-aktifkan jika keranjang kosong
+              >
+                {" "}
+                   
+                <FontAwesomeIcon icon={faShoppingCart} />  
+                <strong>BAYAR</strong>
+              </Button>
+            </Col>
+          </Row>
+        </div>
+
+        {/* mobile */}
+        <div className="d-sm-block d-md-none">
+          <Row>
+            {/* Menggunakan offset 9 untuk menempatkan di 3 kolom terakhir */}
+            <Col md={{ span: 3, offset: 9 }} className="px-4">
+              {/* Tata Letak Total Bayar (Perbaikan Rata Kanan) */}
+              <Row className="mt-2 mb-3">
+                <Col xs={6}>
+                  <h4>
+                    <strong>Total Bayar:</strong>
+                  </h4>
+                </Col>
+                <Col xs={6} className="text-right">
+                  <h4>
+                    <strong>
+                      Rp. {new Intl.NumberFormat("id-ID").format(totalBayar)}
+                    </strong>
+                  </h4>
+                </Col>
+              </Row>
+
+              {/* Tombol BAYAR */}
+              <Button
+                variant="primary"
+                block
+                className="mb-2 mt-2"
+                size="lg"
+                onClick={() => this.sumbitTotalBayar(totalBayar)}
+                disabled={totalBayar === 0} // Non-aktifkan jika keranjang kosong
+              >
+                {" "}
+                   
+                <FontAwesomeIcon icon={faShoppingCart} />  
+                <strong>BAYAR</strong>
+              </Button>
+            </Col>
+          </Row>
+        </div>
+      </>
     );
   }
 }

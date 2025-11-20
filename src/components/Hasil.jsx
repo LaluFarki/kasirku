@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { Badge, Col, Row } from "react-bootstrap";
+import { Badge, Col, Row,Card } from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup";
 import TotalBayar from "./TotalBayar";
 import { ModalKeranjang } from "./ModalKeranjang";
 import { API_URL } from "../utils/constants";
 import axios from "axios";
 import swal from "sweetalert";
-
 
 
 export default class Hasil extends Component {
@@ -39,7 +38,8 @@ export default class Hasil extends Component {
   tambah = () => {
     this.setState({
       jumlah: this.state.jumlah + 1,
-      totalHarga:  this.state.keranjangDetail.product.harga * (this.state.jumlah + 1),
+      totalHarga:
+        this.state.keranjangDetail.product.harga * (this.state.jumlah + 1),
     });
   };
 
@@ -62,28 +62,50 @@ export default class Hasil extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     // Implementasi logika simpan perubahan di sini
+    this.handleClose();
+
     const data = {
       jumlah: this.state.jumlah,
-      total_harga:this.state.totalHarga,
+      total_harga: this.state.totalHarga,
       product: this.state.keranjangDetail.product,
-      keterangan:this.state.keterangan
+      keterangan: this.state.keterangan,
     };
-
 
     axios
       .put(API_URL + "keranjangs/" + this.state.keranjangDetail.id, data)
       .then((res) => {
         swal({
           title: "Update Pesanan",
-          text:
-            "Sukses Update Pesanan!" +
-            data.product.nama,
+          text: "Sukses Update Pesanan!" + data.product.nama,
           icon: "success",
           button: false,
           timer: 1500,
         });
         // ⬇️ BARIS BARU DITAMBAHKAN DI SINI ⬇️
-        this.getListKeranjang();
+        this.props.getListKeranjang();
+      })
+      .catch((error) => {
+        console.log("Error yaa ", error);
+      });
+  };
+
+  hapusPesanan = (id) => {
+    // Implementasi logika simpan perubahan di sini
+    this.handleClose();
+
+    axios
+      .delete(API_URL + "keranjangs/" + id)
+      .then((res) => {
+        swal({
+          title: "Hapus  Pesanan",
+          text:
+            "Sukses Hapus Pesanan!" + this.state.keranjangDetail.product.nama,
+          icon: "error",
+          button: false,
+          timer: 1500,
+        });
+        // ⬇️ BARIS BARU DITAMBAHKAN DI SINI ⬇️
+        this.props.getListKeranjang();
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -106,53 +128,56 @@ export default class Hasil extends Component {
         </h4>
 
         {keranjangs.length !== 0 && (
-          <ListGroup variant="flush">
-            {keranjangs.map((menuKeranjang) => (
-              <ListGroup.Item
-                key={menuKeranjang.id}
-                onClick={() => this.handleShow(menuKeranjang)}
-                style={{ cursor: "pointer" }} // Tambahkan style agar terlihat bisa diklik
-              >
-                <Row>
-                  <Col xs={2}>
-                    <h4>
-                      <Badge pill bg="success">
-                        {menuKeranjang.jumlah}
-                      </Badge>
-                    </h4>
-                  </Col>
-                  <Col>
-                    <h5>{menuKeranjang.product.nama}</h5>
-                    <p>
-                      Rp.{" "}
-                      {new Intl.NumberFormat("id-ID").format(
-                        menuKeranjang.product.harga
-                      )}
-                    </p>
-                  </Col>
-                  <Col>
-                    <h5>Total</h5>
-                    <strong className="float-right">
-                      Rp.{" "}
-                      {new Intl.NumberFormat("id-ID").format(
-                        menuKeranjang.total_harga
-                      )}
-                    </strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
+          <Card className="overflow-auto hasil">
+            <ListGroup variant="flush">
+              {keranjangs.map((menuKeranjang) => (
+                <ListGroup.Item
+                  key={menuKeranjang.id}
+                  onClick={() => this.handleShow(menuKeranjang)}
+                  style={{ cursor: "pointer" }} // Tambahkan style agar terlihat bisa diklik
+                >
+                  <Row>
+                    <Col xs={2}>
+                      <h4>
+                        <Badge pill bg="success">
+                          {menuKeranjang.jumlah}
+                        </Badge>
+                      </h4>
+                    </Col>
+                    <Col>
+                      <h5>{menuKeranjang.product.nama}</h5>
+                      <p>
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID").format(
+                          menuKeranjang.product.harga
+                        )}
+                      </p>
+                    </Col>
+                    <Col>
+                      <h5>Total</h5>
+                      <strong className="float-right">
+                        Rp.{" "}
+                        {new Intl.NumberFormat("id-ID").format(
+                          menuKeranjang.total_harga
+                        )}
+                      </strong>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))}
 
-            <ModalKeranjang
-              handleClose={this.handleClose}
-              {...this.state}
-              keranjangDetail={keranjangDetail}
-              tambah={this.tambah}
-              kurang={this.kurang}
-             changeHandler={this.changeHandler}
-             handleSubmit={this.handleSubmit}
-            />
-          </ListGroup>
+              <ModalKeranjang
+                handleClose={this.handleClose}
+                {...this.state}
+                keranjangDetail={keranjangDetail}
+                tambah={this.tambah}
+                kurang={this.kurang}
+                changeHandler={this.changeHandler}
+                handleSubmit={this.handleSubmit}
+                hapusPesanan={this.hapusPesanan}
+              />
+            </ListGroup>
+          </Card>
         )}
 
         <TotalBayar keranjangs={keranjangs} {...this.props} />

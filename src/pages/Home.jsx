@@ -144,12 +144,12 @@ export default class Home extends Component {
                   changeCategory={this.changeCategory}
                   categoriYangDipilih={categoriYangDipilih}
                 />
-                <Col>
+                <Col className="mt-2">
                   <h4>
                     <strong>Daftar Produk</strong>
                   </h4>
                   <hr />
-                  <Row>
+                  <Row className="overflow-auto menu">
                     {menus &&
                       menus.map((menu) => (
                         <Menus
@@ -160,7 +160,11 @@ export default class Home extends Component {
                       ))}
                   </Row>
                 </Col>
-                <Hasil keranjangs={keranjangs}  {...this.props} />
+                <Hasil
+                  keranjangs={keranjangs}
+                  getListKeranjang={this.getListKeranjang}
+                  {...this.props}
+                />
               </Row>
             </Container>
           </div>
